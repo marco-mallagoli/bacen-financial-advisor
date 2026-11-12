@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BACEN Financial & Pix Advisor — Interface Executiva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg-app: #f8fafc;
+      --bg-sidebar: #0f172a;
+      --bg-sidebar-card: #1e293b;
+      --bg-sidebar-hover: #334155;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-on-dark: #f8fafc;
+      --text-on-dark-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --border: #e2e8f0;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 340px;
+      min-width: 340px;
+      background: var(--bg-sidebar);
+      color: var(--text-on-dark);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #1e293b;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-top: 2px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-on-dark-muted);
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    .sidebar-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-on-dark-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filter-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filter-group label {
+      display: block;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .filter-select {
+      width: 100%;
+      background: var(--bg-sidebar-card);
+      color: var(--text-on-dark);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: #60a5fa;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .action-card {
+      background: var(--bg-sidebar-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .action-card:hover {
+      background: var(--bg-sidebar-hover);
+      border-color: rgba(96, 165, 250, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .action-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 3px;
+    }
+
+    .action-card-desc {
+      font-size: 11.5px;
+      color: var(--text-on-dark-muted);
+      line-height: 1.35;
+    }
+
+    .architecture-box {
+      padding: 14px 20px;
+      margin-top: auto;
+      background: rgba(15, 23, 42, 0.6);
+      font-size: 11.5px;
+      color: var(--text-on-dark-muted);
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .arch-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 0;
+    }
+
+    .arch-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+
+    /* Main Area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 60px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--success);
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .session-id-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    /* Chat Container */
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 24px;
+    }
+
+    .chat-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Welcome Hero */
+    .welcome-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .welcome-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .welcome-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .starter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .starter-chip {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .starter-chip:hover {
+      background: var(--accent-soft);
+      border-color: #93c5fd;
+      color: var(--accent);
+    }
+
+    /* Message Rows */
+    .msg-user {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: 16px 16px 4px 16px;
+      max-width: 75%;
+      font-size: 14px;
+      line-height: 1.5;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .msg-assistant-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Pipeline Stepper inside Assistant Message */
+    .pipeline-tracker {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stepper-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #475569;
+      transition: all 0.2s;
+    }
+
+    .step-badge.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #93c5fd;
+      animation: pulse 1.5s infinite;
+    }
+
+    .step-badge.done {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
+    }
+
+    .tools-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }
+
+    .tool-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* Critic Verdict Audit Banner */
+    .critic-banner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: #065f46;
+    }
+
+    .critic-banner.warn {
+      background: var(--warning-bg);
+      border-color: #fde68a;
+      color: #92400e;
+    }
+
+    .critic-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    /* Markdown Content */
+    .markdown-body {
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--text-primary);
+    }
+
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .markdown-body h2 { font-size: 17px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .markdown-body h3 { font-size: 15px; }
+    .markdown-body p { margin-bottom: 10px; }
+    .markdown-body ul, .markdown-body ol { margin-left: 20px; margin-bottom: 12px; }
+    .markdown-body li { margin-bottom: 4px; }
+
+    .markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .markdown-body th {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: left;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .markdown-body td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .markdown-body tr:last-child td {
+      border-bottom: none;
+    }
+
+    .markdown-body tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .details-drawer {
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .details-drawer summary {
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .details-drawer summary:hover {
+      color: var(--text-primary);
+    }
+
+    /* Input Bar */
+    .composer-bar {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      flex-shrink: 0;
+    }
+
+    .composer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .composer-input {
+      flex: 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .composer-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .btn-send {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-send:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-send:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-row">
+        <div class="brand-icon" id="ui-icon">🏦</div>
+        <div>
+          <div class="brand-title" id="ui-title">BACEN Financial & Pix Advisor</div>
+          <span class="brand-badge" id="ui-badge">ADK 2.x · Multi-Agent + MCP</span>
+        </div>
+      </div>
+      <div class="brand-subtitle" id="ui-subtitle">
+        Inteligência Regulatória BCB (Ranking Reclamações · Pix/SPI · Juros Olinda · Tarifas)
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-label">1. Filtros de Contexto</div>
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label id="lbl-primary" for="sel-primary">Segmento Financeiro (BCB)</label>
+          <select id="sel-primary" class="filter-select"></select>
+        </div>
+        <div class="filter-group">
+          <label id="lbl-secondary" for="sel-secondary">Modalidade de Crédito (API Olinda)</label>
+          <select id="sel-secondary" class="filter-select"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-label">2. Análises Guiadas (1 Clique)</div>
+      <div class="quick-actions" id="quick-actions"></div>
+    </div>
+
+    <div class="architecture-box">
+      <div class="section-label" style="margin-bottom:6px;">Pipeline Multi-Agente Ativo</div>
+      <div class="arch-step"><span class="arch-dot"></span> 1. Coordinator (Roteamento Flash)</div>
+      <div class="arch-step"><span class="arch-dot"></span> <span id="arch-collector">2. Collector (7 Tools MCP)</span></div>
+      <div class="arch-step"><span class="arch-dot"></span> 3. Senior Analyst (Gemini Pro)</div>
+      <div class="arch-step"><span class="arch-dot"></span> 4. Quality Critic (LLM-as-Judge)</div>
+      <div class="arch-step"><span class="arch-dot"></span> 5. Report Publisher (Relatório Final)</div>
+    </div>
+  </aside>
+
+  <!-- Main Workspace -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="status-pill"><span class="status-dot"></span> Agente & Servidor MCP Online</span>
+        <span class="session-id-label" id="session-badge">Sessão: iniciando...</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-secondary" id="btn-new-session">＋ Nova Conversa</button>
+        <a class="btn-secondary" id="btn-dev-ui" href="/dev-ui/?app=bacen_advisor" target="_blank" rel="noopener">
+          🛠️ Abrir Console ADK (Debug)
+        </a>
+      </div>
+    </header>
+
+    <div class="chat-scroll" id="chat-scroll">
+      <div class="chat-container" id="chat-container">
+        <div class="welcome-card" id="welcome-card">
+          <div class="welcome-title" id="welcome-title">Olá! Como posso apoiar sua análise do Sistema Financeiro e Pix hoje?</div>
+          <div class="welcome-desc" id="welcome-desc">
+            Esta é a <strong>Interface Final do Usuário</strong>. Diferente do console técnico do ADK, aqui os rascunhos intermediários e o JSON bruto de auditoria ficam organizados nos bastidores, exibindo apenas o relatório executivo final auditado pelo <em>Quality Critic</em>.
+          </div>
+          <div class="starter-chips" id="starter-chips"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="composer-bar">
+      <form class="composer-inner" id="chat-form">
+        <input
+          type="text"
+          id="chat-input"
+          class="composer-input"
+          placeholder="Pergunte sobre bancos, fintechs, índice de reclamações BCB, SLAs do Pix (SPI/DICT/MED), juros ou tarifas..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn-send" id="btn-send">Enviar →</button>
+      </form>
+    </footer>
+  </main>
+
+  <script>
+    const AGENT_LABELS = {
+      bacen_coordinator: "1. Roteador (Coordinator)",
+      knowledge_agent: "2. Especialista Regulatório",
+      quick_data_agent: "2. Consulta Rápida MCP",
+      data_collector: "2. Coleta MCP (Collector)",
+      banking_analyst: "3. Analista Sênior (Gemini Pro)",
+      quality_critic: "4. Auditoria de Fatos (Critic)",
+      report_publisher: "5. Publicação Final"
+    };
+
+    let uiConfig = null;
+    let sessionId = null;
+    const userId = "exec_user";
+
+    async function loadConfigAndInit() {
+      const res = await fetch("/app/config");
+      const raw = await res.json();
+      uiConfig = raw.profiles && raw.profiles.bacen ? raw.profiles.bacen : raw;
+      await applyConfig();
+    }
+
+    async function applyConfig() {
+      document.title = `${uiConfig.title} — Interface Executiva`;
+      document.getElementById("ui-icon").textContent = uiConfig.icon || "🏛️";
+      document.getElementById("ui-title").textContent = uiConfig.title;
+      document.getElementById("ui-subtitle").textContent = uiConfig.subtitle;
+      document.getElementById("ui-badge").textContent = uiConfig.badge;
+      document.getElementById("lbl-primary").textContent = uiConfig.primarySelectorLabel;
+      document.getElementById("lbl-secondary").textContent = uiConfig.secondarySelectorLabel;
+      document.getElementById("arch-collector").textContent = uiConfig.collectorLabel || "2. Collector (MCP)";
+      document.getElementById("welcome-title").textContent = uiConfig.welcomeTitle || uiConfig.title;
+      document.getElementById("welcome-desc").innerHTML = uiConfig.welcomeDesc || "";
+      document.getElementById("chat-input").placeholder = uiConfig.inputPlaceholder || "Digite sua pergunta...";
+      document.getElementById("btn-dev-ui").href = `/dev-ui/?app=${uiConfig.appName}`;
+
+      const selPrimary = document.getElementById("sel-primary");
+      selPrimary.innerHTML = "";
+      uiConfig.primaryOptions.forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt.value;
+        o.textContent = opt.label;
+        selPrimary.appendChild(o);
+      });
+
+      const selSecondary = document.getElementById("sel-secondary");
+      selSecondary.innerHTML = "";
+      uiConfig.secondaryOptions.forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt.value;
+        o.textContent = opt.label;
+        selSecondary.appendChild(o);
+      });
+
+      const qaContainer = document.getElementById("quick-actions");
+      qaContainer.innerHTML = "";
+      uiConfig.quickActions.forEach(action => {
+        const btn = document.createElement("button");
+        btn.className = "action-card";
+        btn.innerHTML = `
+          <div class="action-card-header"><span>${action.icon}</span><span>${action.title}</span></div>
+          <div class="action-card-desc">${action.desc}</div>
+        `;
+        btn.onclick = () => {
+          const p = selPrimary.value;
+          const s = selSecondary.value;
+          const prompt = action.template.replace("{primary}", p).replace("{secondary}", s);
+          sendPrompt(prompt);
+        };
+        qaContainer.appendChild(btn);
+      });
+
+      const chipsContainer = document.getElementById("starter-chips");
+      chipsContainer.innerHTML = "";
+      uiConfig.starterPrompts.forEach(prompt => {
+        const chip = document.createElement("button");
+        chip.className = "starter-chip";
+        chip.textContent = prompt;
+        chip.onclick = () => sendPrompt(prompt);
+        chipsContainer.appendChild(chip);
+      });
+
+      const container = document.getElementById("chat-container");
+      Array.from(container.children).forEach(child => {
+        if (child.id !== "welcome-card") child.remove();
+      });
+
+      await createNewSession();
+    }
+
+    async function createNewSession() {
+      const appName = uiConfig ? uiConfig.appName : "bacen_advisor";
+      const res = await fetch(`/apps/${appName}/users/${userId}/sessions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+      });
+      const data = await res.json();
+      sessionId = data.id;
+      document.getElementById("session-badge").textContent = `${appName} · Sessão: ${sessionId.slice(0, 8)}`;
+    }
+
+    document.getElementById("btn-new-session").onclick = async () => {
+      await createNewSession();
+      const container = document.getElementById("chat-container");
+      Array.from(container.children).forEach(child => {
+        if (child.id !== "welcome-card") child.remove();
+      });
+    };
+
+    document.getElementById("chat-form").onsubmit = (e) => {
+      e.preventDefault();
+      const input = document.getElementById("chat-input");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      sendPrompt(text);
+    };
+
+    function scrollToBottom() {
+      const scroller = document.getElementById("chat-scroll");
+      scroller.scrollTop = scroller.scrollHeight;
+    }
+
+    async function sendPrompt(text) {
+      if (!sessionId) await createNewSession();
+      const container = document.getElementById("chat-container");
+      const sendBtn = document.getElementById("btn-send");
+      sendBtn.disabled = true;
+
+      // User message bubble
+      const userBubble = document.createElement("div");
+      userBubble.className = "msg-user";
+      userBubble.textContent = text;
+      container.appendChild(userBubble);
+
+      // Assistant card
+      const card = document.createElement("div");
+      card.className = "msg-assistant-card";
+      card.innerHTML = `
+        <div class="pipeline-tracker">
+          <div class="stepper-row" data-role="stepper"></div>
+          <div class="tools-row" data-role="tools" style="display:none;">
+            <span>Ferramentas acionadas:</span>
+          </div>
+        </div>
+        <div data-role="critic-slot"></div>
+        <div class="markdown-body" data-role="answer">
+          <em style="color:#64748b;">Processando solicitação nos agentes especialistas...</em>
+        </div>
+        <div data-role="behind-scenes-slot"></div>
+      `;
+      container.appendChild(card);
+      scrollToBottom();
+
+      const stepperEl = card.querySelector('[data-role="stepper"]');
+      const toolsEl = card.querySelector('[data-role="tools"]');
+      const criticSlot = card.querySelector('[data-role="critic-slot"]');
+      const answerEl = card.querySelector('[data-role="answer"]');
+      const behindSlot = card.querySelector('[data-role="behind-scenes-slot"]');
+
+      const seenAgents = [];
+      const seenTools = new Set();
+      let analystDraft = "";
+      let collectorDigest = "";
+      let criticVerdict = null;
+      let finalAnswerText = "";
+      let fallbackText = "";
+
+      function updateStepper(activeAgent, markAllDone = false) {
+        if (activeAgent && !seenAgents.includes(activeAgent)) {
+          seenAgents.push(activeAgent);
+        }
+        stepperEl.innerHTML = "";
+        seenAgents.forEach((ag, idx) => {
+          const badge = document.createElement("span");
+          const isLast = idx === seenAgents.length - 1;
+          badge.className = "step-badge " + (markAllDone || !isLast ? "done" : "active");
+          const label = AGENT_LABELS[ag] || ag;
+          badge.textContent = (markAllDone || !isLast ? "✓ " : "● ") + label;
+          stepperEl.appendChild(badge);
+        });
+      }
+
+      function addToolPill(toolName) {
+        if (!toolName || toolName === "transfer_to_agent" || seenTools.has(toolName)) return;
+        seenTools.add(toolName);
+        toolsEl.style.display = "flex";
+        const pill = document.createElement("span");
+        pill.className = "tool-pill";
+        pill.textContent = toolName + "()";
+        toolsEl.appendChild(pill);
+      }
+
+      try {
+        const appName = uiConfig ? uiConfig.appName : "bacen_advisor";
+        const response = await fetch("/run_sse", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            appName: appName,
+            userId: userId,
+            sessionId: sessionId,
+            newMessage: {
+              role: "user",
+              parts: [{ text: text }]
+            },
+            streaming: false
+          })
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+
+          for (const line of lines) {
+            if (!line.startsWith("data:")) continue;
+            const rawJson = line.slice(5).trim();
+            if (!rawJson) continue;
+            let evt;
+            try {
+              evt = JSON.parse(rawJson);
+            } catch (err) {
+              continue;
+            }
+
+            const author = evt.author || "bacen_coordinator";
+            updateStepper(author, false);
+
+            const parts = (evt.content && evt.content.parts) || [];
+            for (const part of parts) {
+              if (part.functionCall && part.functionCall.name) {
+                addToolPill(part.functionCall.name);
+              }
+              if (part.text && !part.thought) {
+                const txt = part.text.trim();
+                if (!txt) continue;
+
+                if (author === "data_collector") {
+                  collectorDigest = txt;
+                  answerEl.innerHTML = `<em style="color:#64748b;">Dados coletados no servidor MCP oficial. Executando análise estratégica (Gemini Pro)...</em>`;
+                } else if (author === "banking_analyst") {
+                  analystDraft = txt;
+                  answerEl.innerHTML = `<em style="color:#64748b;">Análise concluída. Verificando fatos e números no Quality Critic...</em>`;
+                } else if (author === "quality_critic") {
+                  try {
+                    criticVerdict = JSON.parse(txt);
+                  } catch (_) {
+                    // keep raw if not JSON
+                  }
+                  answerEl.innerHTML = `<em style="color:#64748b;">Auditoria concluída. Formatando relatório executivo final...</em>`;
+                } else if (
+                  author === "report_publisher" ||
+                  author === "quick_data_agent" ||
+                  author === "knowledge_agent"
+                ) {
+                  finalAnswerText = txt;
+                  answerEl.innerHTML = marked.parse(finalAnswerText);
+                } else {
+                  fallbackText = txt;
+                }
+              }
+            }
+
+            if (evt.actions && evt.actions.stateDelta && evt.actions.stateDelta.critic_verdict) {
+              criticVerdict = evt.actions.stateDelta.critic_verdict;
+            }
+            scrollToBottom();
+          }
+        }
+
+        updateStepper(null, true);
+
+        const displayMarkdown = finalAnswerText || analystDraft || fallbackText || "Nenhuma resposta gerada.";
+        answerEl.innerHTML = marked.parse(displayMarkdown);
+
+        if (criticVerdict && typeof criticVerdict === "object") {
+          const ok = criticVerdict.approved !== false;
+          const score = criticVerdict.groundedness_score ?? 5;
+          const summary = criticVerdict.summary || "Dados auditados contra as ferramentas oficiais do servidor MCP.";
+          criticSlot.innerHTML = `
+            <div class="critic-banner ${ok ? "" : "warn"}">
+              <div>
+                <div class="critic-title">
+                  ${ok ? "✅ Relatório Auditado pelo Quality Critic (LLM-as-Judge)" : "⚠️ Revisão do Quality Critic Aplicada"}
+                  · Groundedness: ${score}/5
+                </div>
+                <div>${summary}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (analystDraft || collectorDigest) {
+          behindSlot.innerHTML = `
+            <details class="details-drawer">
+              <summary>🔍 Ver bastidores da execução (Coleta MCP & Rascunho do Analista)</summary>
+              <div style="margin-top:10px; display:flex; flex-direction:column; gap:10px;">
+                ${collectorDigest ? `<div><strong>Resumo da Coleta (data_collector):</strong><div class="markdown-body" style="margin-top:4px; padding:10px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">${marked.parse(collectorDigest)}</div></div>` : ""}
+                ${analystDraft ? `<div><strong>Rascunho do Analista Sênior (Gemini Pro):</strong><div class="markdown-body" style="margin-top:4px; padding:10px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">${marked.parse(analystDraft)}</div></div>` : ""}
+              </div>
+            </details>
+          `;
+        }
+      } catch (err) {
+        answerEl.innerHTML = `<span style="color:#dc2626;">Erro ao consultar o agente: ${err.message}</span>`;
+      } finally {
+        sendBtn.disabled = false;
+        scrollToBottom();
+      }
+    }
+
+    loadConfigAndInit();
+  </script>
+</body>
+</html>

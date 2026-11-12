@@ -1,0 +1,72 @@
+# =============================================================================
+# Secrets & credentials (never commit)
+# =============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+application_default_credentials.json
+
+# =============================================================================
+# Deployment / infra outputs (generated per environment)
+# =============================================================================
+.env.deploy
+deployment/.agent_engine.json
+
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# =============================================================================
+# Tooling caches & reports
+# =============================================================================
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.log
+
+# =============================================================================
+# ADK local runtime (sessions, eval history)
+# =============================================================================
+.adk/
+*.db
+*.sqlite
+*.sqlite3
+**/.adk/eval_history/
+
+# =============================================================================
+# IDE / OS
+# =============================================================================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# E2E run output
+e2e_results.json
+
+# Terraform (keep .terraform.lock.hcl committed)
+.terraform/
+*.tfplan
+*.tfstate
+*.tfstate.*
+crash.log
+terraform/environments/*.private.tfvars
+
+.*ignore
+!.gitignore
+!.dockerignore
+!.gcloudignore

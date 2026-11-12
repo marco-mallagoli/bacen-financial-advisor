@@ -1,0 +1,40 @@
+# Cloud Build CD pipeline: lint -> unit -> golden eval -> deploy -> post-deploy e2e.
+substitutions:
+  _REGION: us-central1
+options:
+  logging: CLOUD_LOGGING_ONLY
+  env:
+    - GOOGLE_CLOUD_PROJECT=$PROJECT_ID
+    - GOOGLE_CLOUD_LOCATION=${_REGION}
+    - GOOGLE_GENAI_USE_VERTEXAI=TRUE
+    - UV_PYTHON_INSTALL_DIR=/workspace/.uv-python
+timeout: 3600s
+steps:
+  - id: install
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", "pip install -q uv && uv venv .venv --python /usr/local/bin/python3 && uv pip install -q --python .venv/bin/python -e '.[dev]'"]
+  - id: lint
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", ".venv/bin/python -m ruff check bacen_advisor mcp_bacen tests deployment"]
+  - id: unit-tests
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", ".venv/bin/python -m pytest tests/unit -q && PYTHONPATH=mcp_bacen .venv/bin/python -m pytest mcp_bacen/tests -q"]
+  - id: eval
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", ".venv/bin/python -m pytest tests/eval -m eval -q"]
+  - id: deploy
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", ".venv/bin/python deployment/deploy.py"]
+  - id: e2e
+    name: python:3.12-slim
+    entrypoint: bash
+    args: ["-c", ".venv/bin/python tests/e2e/run_remote_stories.py"]
+artifacts:
+  objects:
+    location: gs://${PROJECT_ID}-bacen-advisor-staging/cloudbuild/$BUILD_ID/
+    paths: ["e2e_results.json"]

@@ -1,0 +1,57 @@
+[project]
+name = "bacen-financial-advisor"
+version = "0.1.0"
+description = "Multi-agent Google ADK 2.x system that analyzes official Banco Central do Brasil (BACEN / API Olinda) quality, Pix/SPI, credit interest rates, and banking fee data through a governed MCP server."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "google-adk[mcp,db]>=2.12.0,<3",
+  "google-cloud-aiplatform[agent_engines,adk]>=2.6.0,<3",
+  "google-cloud-logging>=3.11.0,<4",
+  "google-cloud-dlp>=3.25.0,<4",
+  "google-cloud-discoveryengine>=0.13,<1",
+  "google-cloud-secret-manager>=2.23.0,<3",
+  "google-cloud-storage>=2.18.0,<4",
+  "google-cloud-modelarmor>=0.2.0,<1",
+  "opentelemetry-exporter-gcp-trace>=1.9.0,<2",
+  "opentelemetry-sdk>=1.30.0,<2",
+  "pydantic>=2.8.0,<3",
+  "aiosqlite>=0.20.0,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "google-adk[eval]>=2.12.0,<3",
+  "pytest>=8.3.0,<10",
+  "pytest-asyncio>=0.24.0,<2",
+  "ruff>=0.7.0,<1",
+  "polars>=1.15.0",
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0",
+  "pydantic-settings>=2.6.0",
+  "httpx>=0.28.0",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["bacen_advisor*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+  "eval: agent evaluation against the golden dataset (calls Gemini + MCP; needs credentials)",
+]
+addopts = "-m 'not eval'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

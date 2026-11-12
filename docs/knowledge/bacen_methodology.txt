@@ -1,0 +1,32 @@
+BANCO CENTRAL DO BRASIL (BACEN / BCB) - REGULATORY & OPEN DATA METHODOLOGY KNOWLEDGE BASE
+(Source: public Banco Central do Brasil and Conselho Monetario Nacional - CMN regulations on Ranking de Reclamacoes, Pix/SPI/DICT/MED, Credit Interest Rates via Olinda API, and Standardized Banking Fees.)
+
+1. SUPERVISED SEGMENTS (Segmentacao Prudencial & Instituicoes de Pagamento)
+- BANCOS_VAREJO (Segmento S1 / Grandes Bancos): universal retail banks with systemic footprint (Itau, Banco do Brasil, Bradesco, Caixa Economica Federal, Santander).
+- BANCOS_DIGITAIS (Bancos Digitais & Instituicoes de Pagamento - IPs): high-growth digital banks and payment institutions (Nubank, Banco Inter, C6 Bank).
+- COOPERATIVAS_ATACADO: credit cooperative systems and investment/wholesale banks (Sicredi, BTG Pactual).
+
+2. RANKING DE RECLAMACOES DO BANCO CENTRAL & OUVIDORIA
+- Published quarterly (YYYY-Q1 to YYYY-Q4) under Resolucao BCB no 155/2021 and Resolucao CMN no 4.860/2020.
+- Formula: Indice de Reclamacoes BCB = (Regulated Substantiated Complaints * 1,000,000) / Total Customers.
+- Directionality: LOWER Indice de Reclamacoes BCB is BETTER.
+- Nota de Qualidade de Atendimento (0 to 100) and Selo de Ouvidoria (A to E): normalized customer-service indicator combining low substantiated complaints, high resolution rate (%) and fast response time (days). HIGHER is BETTER.
+
+3. PIX OPERATIONAL INDICATORS (SPI, DICT & MED - Resolucao BCB no 1/2020)
+- disponibilidade_spi_pct: participant availability in the Instant Payment System (SPI). Regulatory target >= 99.90%. HIGHER is better.
+- tempo_liquidacao_p95_seg: 95th percentile end-to-end Pix settlement latency in seconds. Target <= 2.00s. LOWER is better.
+- tempo_consulta_dict_p99_ms: 99th percentile Pix key resolution latency in DICT (milliseconds). Target <= 500ms. LOWER is better.
+- taxa_sucesso_transacional_pct: share of Pix transactions completed without technical rejection. Target >= 99.50%. HIGHER is better.
+- indice_med_contestacao_100k: Special Return Mechanism (MED - Mecanismo Especial de Devolucao) fraud/operational dispute notifications per 100,000 transactions. LOWER is better.
+
+4. CREDIT INTEREST RATES (API Olinda taxaJuros & CET - Resolucao CMN no 3.517/2007)
+- Modalities: CONSIGNADO_INSS (INSS payroll-deductible loan), CREDITO_PESSOAL (non-payroll personal loan), CARTAO_ROTATIVO (revolving credit card, subject to the 100% total debt cap under Law 14.690/2023), FINANCIAMENTO_IMOBILIARIO (market-rate residential mortgage), CAPITAL_GIRO_PJ (corporate working capital > 365 days).
+- CET (Custo Efetivo Total): all-in annual cost (% a.a.) including nominal interest, IOF tax, registration fees and insurance. LOWER is better for borrowers.
+
+5. BANKING FEES & ESSENTIAL SERVICES (Resolucao CMN no 3.919/2010)
+- Servicos Essenciais: mandatory free checking-account tier for individuals (up to 4 withdrawals, 2 same-bank transfers and 10 check leaves per month at R$ 0.00).
+- Pix Pessoa Fisica (PF): mandatory R$ 0.00 fee for individuals sending and receiving Pix transfers (save narrow commercial exceptions defined by BCB).
+- Standardized Packages (Pacotes Padronizados): comparable monthly bundles published in Olinda Tarifas / IF.data.
+
+6. CONSOLIDATED BCB INSTITUTION SCORE (used by comparar_instituicoes_bcb)
+Score 0-10 = 35% Ouvidoria/Atendimento (rescaled 0-10) + 25% Pix/SPI Stability + 20% Credit Rate Competitiveness + 20% Digital App & Fee Transparency.

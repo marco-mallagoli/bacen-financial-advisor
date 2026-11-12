@@ -1,0 +1,58 @@
+{
+  "appName": "bacen_advisor",
+  "icon": "🏦",
+  "title": "BACEN Financial & Pix Advisor",
+  "subtitle": "Inteligência Regulatória BCB (Ranking Reclamações · Pix/SPI · Juros Olinda · Tarifas)",
+  "badge": "ADK 2.x · Multi-Agent + MCP Olinda",
+  "welcomeTitle": "Olá! Como posso apoiar sua análise do Sistema Financeiro e Pix hoje?",
+  "welcomeDesc": "Interface Executiva conectada ao servidor MCP do <strong>Banco Central do Brasil (BACEN)</strong>, exibindo apenas o relatório executivo final auditado pelo <em>Quality Critic (LLM-as-Judge)</em>.",
+  "inputPlaceholder": "Pergunte sobre bancos, fintechs, índice de reclamações BCB, SLAs do Pix (SPI/DICT/MED), juros ou tarifas...",
+  "collectorLabel": "2. Collector (7 Tools MCP BACEN/Olinda)",
+  "primarySelectorLabel": "Segmento Financeiro (BCB)",
+  "primaryOptions": [
+    {"label": "Todos os Bancos & Fintechs", "value": "TODOS"},
+    {"label": "Bancos Digitais & IPs (Nubank, Inter, C6)", "value": "BANCOS_DIGITAIS"},
+    {"label": "Bancos de Varejo S1 (Itaú, BB, Bradesco, Caixa, Santander)", "value": "BANCOS_VAREJO"},
+    {"label": "Cooperativas & Atacado (Sicredi, BTG Pactual)", "value": "COOPERATIVAS_ATACADO"}
+  ],
+  "secondarySelectorLabel": "Modalidade de Crédito (API Olinda)",
+  "secondaryOptions": [
+    {"label": "Crédito Pessoal Não-Consignado", "value": "CREDITO_PESSOAL"},
+    {"label": "Crédito Consignado INSS", "value": "CONSIGNADO_INSS"},
+    {"label": "Cartão de Crédito Rotativo", "value": "CARTAO_ROTATIVO"},
+    {"label": "Financiamento Imobiliário", "value": "FINANCIAMENTO_IMOBILIARIO"},
+    {"label": "Capital de Giro PJ (> 365 dias)", "value": "CAPITAL_GIRO_PJ"}
+  ],
+  "quickActions": [
+    {
+      "icon": "🏦",
+      "title": "Comparativo Completo BCB (4 Pilares)",
+      "desc": "Cruza Ranking Ouvidoria, Pix/SPI, Juros Olinda e Tarifas/App",
+      "template": "Compare as instituições do segmento {primary} considerando todos os 4 pilares do Banco Central e a modalidade {secondary}."
+    },
+    {
+      "icon": "⚡",
+      "title": "Diagnóstico Operacional do Pix (SPI/MED)",
+      "desc": "Disponibilidade SPI, latência P95, chave DICT e índice MED",
+      "template": "Como estão os indicadores operacionais do Pix (disponibilidade SPI, liquidação P95, DICT e MED) nas instituições do segmento {primary}?"
+    },
+    {
+      "icon": "📉",
+      "title": "Ranking de Menores Taxas de Juros",
+      "desc": "Compara % a.m., % a.a., CET estimado e spread vs. mercado",
+      "template": "Quais instituições do segmento {primary} têm as menores taxas de juros e CET na modalidade {secondary} segundo os dados do Banco Central?"
+    },
+    {
+      "icon": "⚖️",
+      "title": "Ranking com Pesos Customizados",
+      "desc": "Simula priorização (ex: 50% Juros Baixos, 30% Pix, 20% Ouvidoria)",
+      "template": "Faça um ranking das instituições do segmento {primary} (usando juros de {secondary}) dando 50% de peso para custo de juros, 30% para estabilidade do Pix e 20% para atendimento/ouvidoria."
+    }
+  ],
+  "starterPrompts": [
+    "Compare os bancos digitais (Nubank, Inter e C6 Bank) em todos os pilares do BCB",
+    "Quais bancos têm as menores taxas de juros no Consignado INSS?",
+    "Como é calculado o Índice de Reclamações do Banco Central e o que é o MED do Pix?",
+    "Onde consulto os conjuntos de dados abertos e a API Olinda do Banco Central?"
+  ]
+}
